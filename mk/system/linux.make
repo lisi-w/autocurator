@@ -6,8 +6,8 @@
 
 # Linux system
 
-CXX=               g++
-MPICXX=            mpiCC
+CXX ?=               g++
+MPICXX ?=            mpiCC
 
 # NetCDF
 NETCDF_ROOT=       $(CONDA_PREFIX)
