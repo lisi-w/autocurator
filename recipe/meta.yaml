@@ -1,0 +1,24 @@
+package:
+  name: autocurator
+  version: VERSION
+
+source:
+  path: /export/muryanto1/work/update1/autocurator
+
+build:
+  number: BUILD_NUMBER
+  skip: True  # [win or osx] 
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+  host:
+    - python
+    - setuptools
+    - libnetcdf
+    - libnetcdf * nompi_*
+  run:
+    - python
+    - libnetcdf
+
+
