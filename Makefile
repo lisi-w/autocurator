@@ -39,12 +39,18 @@ conda_act_cmd := source $(conda_act)
 
 build_env ?= build_autocurator
 
+#
+# for upload-pkg
+#
+organization ?= esgf-forge
+label ?= main
+
 PWD=$(shell pwd)
 
-setup-build:
+setup-build: # make setup-build workdir=$WORKDIR
 	$(conda) create -y -n $(build_env) -c conda-forge conda-build conda-smithy anaconda-client
 
-create-feedstock:
+create-feedstock: # make create-feedstock workdir=$WORKDIR version=0.1 build_number=0 branch=make_conda_pkg
 	mkdir -p $(workdir)/autocurator-feedstock;
 	$(conda_act_cmd) $(build_env) && \
 	cd $(workdir)/autocurator-feedstock && $(conda) smithy ci-skeleton $(workdir)/autocurator-feedstock;
@@ -55,15 +61,23 @@ create-feedstock:
 	# sed -i "s/BRANCH/$(branch)/" $(workdir)/autocurator-feedstock/recipe/meta.yaml
 	sed -i "s/BUILD_NUMBER/$(build_number)/" $(workdir)/autocurator-feedstock/recipe/meta.yaml
 
-rerender-feedstock:
+rerender-feedstock: # make rerender-feedstock workdir=$WORKDIR
 	cd $(workdir)/autocurator-feedstock && \
 	$(conda_act_cmd) $(build_env) && \
 	$(conda) smithy rerender;
 
-build-conda-pkg:
+build-conda-pkg: # make build-conda-pkg workdir=$WORKDIR python=3.8
 	cd $(workdir)/autocurator-feedstock && \
 	$(conda_act_cmd) $(build_env) && \
-	$(conda) build -c conda-forge -m .ci_support/linux_64_python3.7.____cpython.yaml recipe/
+	$(conda) build -c conda-forge -m .ci_support/linux_64_python$(python).____cpython.yaml recipe/
+#	$(conda) build -c conda-forge -m .ci_support/linux_64_python3.8.____cpython.yaml recipe/
+
+upload-pkg: # make upload-pkg workdir=$WORKDIR python=3.8
+	cd $(workdir)/autocurator-feedstock && \
+	$(conda_act_cmd) $(build_env) && \
+	output_file=$$(conda build --output -c conda-forge -m .ci_support/linux_64_python$(python).____cpython.yaml recipe/) && \
+	anaconda -t $(CONDA_UPLOAD_TOKEN) upload -u $(organization) $$output_file
+#	anaconda -t $(CONDA_UPLOAD_TOKEN) upload -u $(organization) -l $(label) $$output_file
 
 clean-build-env:
 	$(conda) env remove -n $(build_env) && \

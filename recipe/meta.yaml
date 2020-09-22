@@ -3,7 +3,7 @@ package:
   version: VERSION
 
 source:
-  path: /export/muryanto1/work/update1/autocurator
+  path: /home/muryanto1/work/autocurator/autocurator
 
 build:
   number: BUILD_NUMBER
