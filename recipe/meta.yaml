@@ -3,7 +3,9 @@ package:
   version: VERSION
 
 source:
-  path: /home/muryanto1/work/autocurator/autocurator
+  git_url: https://github.com/muryanto1/autocurator
+  git_rev: make_conda_pkg
+#  path: /home/muryanto1/work/autocurator/autocurator
 
 build:
   number: BUILD_NUMBER
