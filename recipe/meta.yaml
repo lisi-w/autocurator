@@ -4,7 +4,7 @@ package:
 
 source:
   git_url: https://github.com/muryanto1/autocurator
-  git_rev: make_conda_pkg
+  git_rev: BRANCH
 #  path: /home/muryanto1/work/autocurator/autocurator
 
 build:

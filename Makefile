@@ -58,7 +58,7 @@ create-feedstock: # make create-feedstock workdir=$WORKDIR version=0.1 build_num
 	cp $(PWD)/recipe/meta.yaml $(workdir)/autocurator-feedstock/recipe/meta.yaml
 	cp $(PWD)/recipe/build.sh $(workdir)/autocurator-feedstock/recipe/build.sh
 	sed -i "s/VERSION/$(version)/" $(workdir)/autocurator-feedstock/recipe/meta.yaml
-	# sed -i "s/BRANCH/$(branch)/" $(workdir)/autocurator-feedstock/recipe/meta.yaml
+	sed -i "s/BRANCH/$(branch)/" $(workdir)/autocurator-feedstock/recipe/meta.yaml
 	sed -i "s/BUILD_NUMBER/$(build_number)/" $(workdir)/autocurator-feedstock/recipe/meta.yaml
 
 rerender-feedstock: # make rerender-feedstock workdir=$WORKDIR
@@ -70,16 +70,14 @@ build-conda-pkg: # make build-conda-pkg workdir=$WORKDIR python=3.8
 	cd $(workdir)/autocurator-feedstock && \
 	$(conda_act_cmd) $(build_env) && \
 	$(conda) build -c conda-forge -m .ci_support/linux_64_python$(python).____cpython.yaml recipe/
-#	$(conda) build -c conda-forge -m .ci_support/linux_64_python3.8.____cpython.yaml recipe/
 
 upload-pkg: # make upload-pkg workdir=$WORKDIR python=3.8
 	cd $(workdir)/autocurator-feedstock && \
 	$(conda_act_cmd) $(build_env) && \
 	output_file=$$(conda build --output -c conda-forge -m .ci_support/linux_64_python$(python).____cpython.yaml recipe/) && \
-	anaconda -t $(CONDA_UPLOAD_TOKEN) upload -u $(organization) $$output_file
-#	anaconda -t $(CONDA_UPLOAD_TOKEN) upload -u $(organization) -l $(label) $$output_file
+	anaconda -t $(CONDA_UPLOAD_TOKEN) upload -u $(organization) -l $(label) $$output_file
 
-clean-build-env:
+clean-build-env: # make clean-build-env workdir=$WORKDIR
 	$(conda) env remove -n $(build_env) && \
 	rm -rf $(workdir)/autocurator-feedstock
 
