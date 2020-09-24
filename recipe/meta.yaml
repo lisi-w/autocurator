@@ -1,0 +1,26 @@
+package:
+  name: autocurator
+  version: VERSION
+
+source:
+  git_url: https://github.com/muryanto1/autocurator
+  git_rev: BRANCH
+#  path: /home/muryanto1/work/autocurator/autocurator
+
+build:
+  number: BUILD_NUMBER
+  skip: True  # [win or osx] 
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+  host:
+    - python
+    - setuptools
+    - libnetcdf
+    - libnetcdf * nompi_*
+  run:
+    - python
+    - libnetcdf
+
+
