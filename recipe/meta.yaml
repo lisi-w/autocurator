@@ -3,9 +3,9 @@ package:
   version: VERSION
 
 source:
-#  git_url: https://github.com/muryanto1/autocurator
-#  git_rev: BRANCH
-  path: /home/muryanto1/work/autocurator/autocurator
+  git_url: https://github.com/muryanto1/autocurator
+  git_rev: BRANCH
+#  path: /home/muryanto1/work/autocurator/autocurator
 
 build:
   number: BUILD_NUMBER
